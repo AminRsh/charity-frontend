@@ -20,7 +20,6 @@ export interface CardProps {
     "name": string,
     "slug": string,
     "location": string,
-    "id": string
 }
 
 export interface NteeCodeMeaning {

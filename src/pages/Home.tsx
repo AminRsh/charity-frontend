@@ -51,8 +51,7 @@ const Home: React.FC = () => {
                         {lists ?
                             lists.map((item) => (
                                 <Card
-                                    key={item.ein}
-                                    id={item.ein}
+                                    key={item.slug}
                                     cover={item.coverImageUrl}
                                     logo={item.logoUrl}
                                     name={item.name}

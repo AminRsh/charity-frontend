@@ -7,11 +7,11 @@ import { Link } from 'react-router-dom';
 
 
 
-const Card: React.FC<CardProps> = ({ cover, logo, name, slug, location, id }) => {
+const Card: React.FC<CardProps> = ({ cover, logo, name, slug, location }) => {
     
     return (
 
-        <Link to={`/details/${id}`} target='_blank'  className="w-full overflow-hidden bg-white rounded-lg shadow-2xl cursor-pointer ">
+        <Link to={`/details/${slug}`} target='_blank'  className="w-full overflow-hidden bg-white rounded-lg shadow-2xl cursor-pointer ">
             <div className="relative">
                 <img
                     className="w-full h-48 object-cover rounded-t-lg hover:opacity-80"
