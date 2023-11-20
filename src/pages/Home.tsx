@@ -19,7 +19,7 @@ const Home: React.FC = () => {
 
         axios.get(`${API_ROUTES.BASE_URL}${API_ROUTES.SEARCH(randCauses)}`)
             .then(res => {
-                console.log(res.data.nonprofits)
+                // console.log(res.data.nonprofits)
                 setLists(res.data.nonprofits)
             })
             .catch(err => {
@@ -32,10 +32,10 @@ const Home: React.FC = () => {
     return (
         <>
             <div className="w-full relative h-[720px] md:h-[500px] lg:h-[600px] xl:h-[720px] bg-no-repeat bg-cover flex flex-col items-center justify-center" style={{ backgroundImage: `url(${Charity})` }}>
-                <h1 className="text-[40px] md:text-[60px] lg:text-[80px] text-red-500 absolute left-[3%] bottom-[16%] md:bottom-[10%] lg:bottom-[16%] animate-pulse">
+                <h1 id="main_home_pic" className="text-[40px] md:text-[60px] lg:text-[80px] text-red-500 absolute left-[3%] bottom-[16%] md:bottom-[10%] lg:bottom-[16%] animate-pulse">
                     One World, One Heart, One Cause
                 </h1>
-                <h2 className="text-[20px] md:text-[30px] lg:text-[40px] absolute left-[3%] bottom-[8%] md:bottom-[4%]">Uniting Hearts for a Better World</h2>
+                <h2 id="sec_home_pic" className="text-[20px] md:text-[30px] lg:text-[40px] absolute left-[3%] bottom-[8%] md:bottom-[4%]">Uniting Hearts for a Better World</h2>
             </div>
 
             <div className="font-sans bg-slate-100 h-auto">

@@ -3,12 +3,11 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { API_ROUTES } from '../api/api';
 import { Nonprofit, NonprofitTag } from '../types/charity.types';
-
+import Swal from 'sweetalert2';
 
 const Details: React.FC = () => {
 
-
-    const {slug} = useParams()
+    const { slug } = useParams<{ slug: string }>()
 
     const [nonprofit, setNonprofit] = useState<Nonprofit>({
         name: '',
@@ -27,23 +26,49 @@ const Details: React.FC = () => {
     const [nonprofitTags, setNonprofitTags] = useState<NonprofitTag>([])
     const nonprofitTagsLenght = nonprofitTags.length
 
-
     useEffect(() => {
+
         if (slug) {
-            axios.get(`${API_ROUTES.BASE_URL}${API_ROUTES.NONPROFIT(slug)}`)
-                .then(res => {
-                    setNonprofit(res.data.data.nonprofit)
-                    setNonprofitTags(res.data.data.nonprofitTags)
+            axios
+                .get(`${API_ROUTES.BASE_URL}${API_ROUTES.NONPROFIT(slug)}`)
+                .then((res) => {
+                    setNonprofit(res.data.data.nonprofit);
+                    setNonprofitTags(res.data.data.nonprofitTags);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.error('Axios request error:', err);
                 });
         } else {
-            console.log('There is slug');
+            console.log('There is no slug');
         }
     }, [slug]);
 
+    const favoriteKey = `isFavorite_${slug}`;
 
+    const [isFavorite, setIsFavorite] = useState<boolean>(
+        JSON.parse(localStorage.getItem(favoriteKey) || 'false')
+        );
+
+    const toggleFavorite = () => {
+        setIsFavorite((prevIsFavorite) => {
+            const newIsFavorite = !prevIsFavorite;
+            localStorage.setItem(favoriteKey, JSON.stringify(newIsFavorite));
+
+            const message = newIsFavorite
+                ? 'Successfully Added to your favorite list'
+                : 'Successfully Removed from  favorite list';
+            Swal.fire({
+                icon: 'success',
+                title: message,
+                showConfirmButton: false,
+                timer: 5000,
+                footer: '<a href="https://github.com/AminRsh" style="color: red; font-size: 20px ;text-decoration: underline;">My Github</a>'
+            });
+
+            return newIsFavorite;
+        });
+    };
+    
     return (
         <>
             <div className="mx-auto py-10 px-4 bg-gray-200 md:px-16 xl:px-20">
@@ -99,20 +124,20 @@ const Details: React.FC = () => {
                 {
                     nonprofitTagsLenght !== 0 &&
                     <div style={{ width: '80%' }} className="min-h-[100px] mx-auto mt-12 mb-16 px-2 flex flex-wrap items-center justify-evenly rounded-lg">
-                    {
-                        nonprofitTags.map(item => item.tagImageUrl && (
-                            <a href={item.tagUrl} className="mb-4" key={item.id} target='_blank'>
-                                <img
-                                    src={item.tagImageUrl}
-                                    width={70}
-                                    height={80}
-                                    data-tooltip-target="tooltip-company"
-                                    className="cursor-pointer hover:opacity-80"
-                                />
-                            </a>
-                        ))
-                    }
-                </div>
+                        {
+                            nonprofitTags.map(item => item.tagImageUrl && (
+                                <a href={item.tagUrl} className="mb-4" key={item.id} target='_blank'>
+                                    <img
+                                        src={item.tagImageUrl}
+                                        width={70}
+                                        height={80}
+                                        data-tooltip-target="tooltip-company"
+                                        className="cursor-pointer hover:opacity-80"
+                                    />
+                                </a>
+                            ))
+                        }
+                    </div>
                 }
 
                 <div className="my-4">
@@ -122,10 +147,22 @@ const Details: React.FC = () => {
                 </div>
 
                 <div className="mt-[100px]">
-                    <a href=""><button className="w-[40%] mb-4 block mx-auto bg-red-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg">
-                        Add to favorite</button></a>
-                    <a href={nonprofit.profileUrl} target='_blank'><button className="w-[40%] block mx-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg">
-                        Check in Every.org</button></a>
+
+                    <button
+                        onClick={toggleFavorite}
+                        className={isFavorite ? "w-[40%] mb-4 block  mx-auto bg-red-600 text-white hover:opacity-80  font-bold py-2 px-4 rounded-lg shadow-lg"
+                                : 'w-[40%] mb-4 block  mx-auto bg-black text-white hover:opacity-80  font-bold py-2 px-4 rounded-lg shadow-lg'
+                    }
+                    >
+                        {isFavorite ? 'Remove from favorite' : 'Add to favorite'}
+                    </button>
+
+                    <a href={nonprofit.profileUrl} target='_blank'>
+                        <button
+                            className="w-[40%] block mx-auto bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg">
+                            Check in Every.org
+                        </button>
+                    </a>
                 </div>
             </div>
 

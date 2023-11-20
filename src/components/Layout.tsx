@@ -1,15 +1,15 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faHeartCircleCheck, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons/faLocationDot';
 import canada from '../assets/images/Canada.svg'
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 const Layout = () => {
     return (
         <>
             <div className="bg-gradient-to-r from-blue-800 to-indigo-900 w-full h-[60px] flex justify-center items-center">
-                <h2 className="text-center text-[#ffffff] font-great-vibe text-2xl py-auto">Inspire, Impact, Ignite Change</h2>
+                <Link to="/"><h2 id="main-header" className="text-center text-[#ffffff] font-great-vibe text-2xl py-auto">Inspire, Impact, Ignite Change</h2></Link> 
             </div>
             <div className="border-b-[1px] border-[#000000]">
                 <div className="flex justify-evenly items-center py-2">
@@ -26,6 +26,11 @@ const Layout = () => {
                     <div className="flex">
                         <img src={canada} alt="" style={{ width: '30px', height: 'auto' }} />
                         <span className="italic font-sans mx-2 text-sm">English, CAD</span>
+                    </div>
+                    <div className="">
+                        <Link to="/favorite" target='_blank' className=" hover:opacity-70">
+                            <FontAwesomeIcon icon={faHeartCircleCheck} size="xl" style={{color: "#f33c1b",}} />
+                        </Link>
                     </div>
                 </div>
             </div>
