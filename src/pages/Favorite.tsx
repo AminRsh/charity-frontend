@@ -25,7 +25,7 @@ const Favorites: React.FC = () => {
                                 logo={favorite.logoUrl}
                                 name={favorite.name}
                                 slug={favorite.slug}
-                                // location={favorite.location}
+                                location={favorite.locationAddress}
                             />
                         ))}
                     </div>

@@ -6,7 +6,6 @@ export const API_ROUTES = {
 
 export const axiosConfig = {
     headers: {
-
         'Authorization': `Bearer ${import.meta.env.VITE_REACT_APP_EVERY_ORG_API_KEY}`,
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
