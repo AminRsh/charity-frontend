@@ -3,10 +3,9 @@ import Card from '../components/Card';
 
 
 const Favorites: React.FC = () => {
-    // Retrieve favorites from local storage
+    
     const favoritesFromStorage = JSON.parse(localStorage.getItem('favorites') || '[]');
-    // console.log(favoritesFromStorage);
-
+    
     return (
         <div className="mx-auto py-10 px-4 bg-gray-200 md:px-16 xl:px-20">
             <h1 className="text-2xl font-bold mb-8">Favorite Charities</h1>

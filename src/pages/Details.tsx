@@ -50,10 +50,10 @@ const Details: React.FC = () => {
     nonprofit.slug = slug || '';
     
     const handleFavoriteToggle = () => {
-        // Get existing favorites from local storage
+        
         const favoritesFromStorage = JSON.parse(localStorage.getItem('favorites') || '[]');
 
-        // Check if the current nonprofit is already in favorites
+        
         const isAlreadyFavorite = favoritesFromStorage.some((fav: Nonprofit) => fav.primarySlug === nonprofit.primarySlug);
 
         Swal.fire({
@@ -64,16 +64,15 @@ const Details: React.FC = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 if (isAlreadyFavorite) {
-                    // Remove from favorites
+            
                     const updatedFavorites = favoritesFromStorage.filter((fav: Nonprofit) => fav.primarySlug !== nonprofit.primarySlug);
                     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
                 } else {
-                    // Add to favorites
+                    
                     const updatedFavorites = [...favoritesFromStorage, nonprofit];
                     localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
                 }
 
-                // Toggle the state
                 setIsFavorite(!isAlreadyFavorite);
 
                 Swal.fire({
@@ -85,7 +84,7 @@ const Details: React.FC = () => {
     };
 
     useEffect(() => {
-        // Check if the current nonprofit is already in favorites when the component mounts
+        
         const favoritesFromStorage = JSON.parse(localStorage.getItem('favorites') || '[]');
         const isAlreadyFavorite = favoritesFromStorage.some((fav: Nonprofit) => fav.primarySlug === nonprofit.primarySlug);
         setIsFavorite(isAlreadyFavorite);
