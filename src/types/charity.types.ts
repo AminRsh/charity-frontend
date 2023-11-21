@@ -7,11 +7,11 @@ export interface ListState {
     "logoUrl": string,
     "coverImageUrl": string,
     "logoCloudinaryId": string,
-    "matchedTerms": string [],
+    "matchedTerms": string[],
     "slug": string,
     "location": string,
     "websiteUrl": string,
-    "tags": string []
+    "tags": string[]
 }
 
 export interface CardProps {
@@ -36,8 +36,9 @@ export interface Nonprofit {
     "nteeCodeMeaning": NteeCodeMeaning,
     "websiteUrl": string,
     "coverImageUrl": string,
-    "profileUrl": string
-    
+    "profileUrl": string,
+    "slug": string,
+
 }
 
 export type NonprofitTag = {
@@ -48,5 +49,11 @@ export type NonprofitTag = {
     tagImageCloudinaryId: string;
     tagUrl: string;
     tagImageUrl: string;
-  }[];
+}[];
+
+export interface SearchProps {
+    options: string[];
+    onSelect?: (selectedOption: string) => void;
+    lists: ListState[];
+}
 

@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import Details from "./pages/Details";
 import Favorite from "./pages/Favorite";
 import NotFound from "./pages/NotFound";
-import Result from "./pages/Result";
+import Search from "./pages/Search";
 import Layout from "./components/Layout";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/details/:slug" element={<Details />} />
             <Route path="/favorite" element={<Favorite />} />
-            <Route path="/result" element={<Result />} />
+            <Route path="/search" element={<Search />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

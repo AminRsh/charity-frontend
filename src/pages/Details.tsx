@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import Swal from 'sweetalert2';
 import { API_ROUTES } from '../api/api';
 import { Nonprofit, NonprofitTag } from '../types/charity.types';
-import Swal from 'sweetalert2';
 
 const Details: React.FC = () => {
 
@@ -22,8 +22,12 @@ const Details: React.FC = () => {
         websiteUrl: '',
         coverImageUrl: '',
         profileUrl: '',
+        slug: ''
     })
     const [nonprofitTags, setNonprofitTags] = useState<NonprofitTag>([])
+
+    const [isFavorite, setIsFavorite] = useState<boolean>(false);
+    
     const nonprofitTagsLenght = nonprofitTags.length
 
     useEffect(() => {
@@ -43,32 +47,50 @@ const Details: React.FC = () => {
         }
     }, [slug]);
 
-    const favoriteKey = `isFavorite_${slug}`;
+    nonprofit.slug = slug || '';
+    
+    const handleFavoriteToggle = () => {
+        // Get existing favorites from local storage
+        const favoritesFromStorage = JSON.parse(localStorage.getItem('favorites') || '[]');
 
-    const [isFavorite, setIsFavorite] = useState<boolean>(
-        JSON.parse(localStorage.getItem(favoriteKey) || 'false')
-        );
+        // Check if the current nonprofit is already in favorites
+        const isAlreadyFavorite = favoritesFromStorage.some((fav: Nonprofit) => fav.primarySlug === nonprofit.primarySlug);
 
-    const toggleFavorite = () => {
-        setIsFavorite((prevIsFavorite) => {
-            const newIsFavorite = !prevIsFavorite;
-            localStorage.setItem(favoriteKey, JSON.stringify(newIsFavorite));
+        Swal.fire({
+            title: isAlreadyFavorite ? 'Remove from Favorites?' : 'Add to Favorites?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: isAlreadyFavorite ? 'Remove' : 'Add',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (isAlreadyFavorite) {
+                    // Remove from favorites
+                    const updatedFavorites = favoritesFromStorage.filter((fav: Nonprofit) => fav.primarySlug !== nonprofit.primarySlug);
+                    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+                } else {
+                    // Add to favorites
+                    const updatedFavorites = [...favoritesFromStorage, nonprofit];
+                    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+                }
 
-            const message = newIsFavorite
-                ? 'Successfully Added to your favorite list'
-                : 'Successfully Removed from  favorite list';
-            Swal.fire({
-                icon: 'success',
-                title: message,
-                showConfirmButton: false,
-                timer: 5000,
-                footer: '<a href="https://github.com/AminRsh" style="color: red; font-size: 20px ;text-decoration: underline;">My Github</a>'
-            });
+                // Toggle the state
+                setIsFavorite(!isAlreadyFavorite);
 
-            return newIsFavorite;
+                Swal.fire({
+                    title: isAlreadyFavorite ? 'Removed!' : 'Added!',
+                    icon: 'success',
+                });
+            }
         });
     };
-    
+
+    useEffect(() => {
+        // Check if the current nonprofit is already in favorites when the component mounts
+        const favoritesFromStorage = JSON.parse(localStorage.getItem('favorites') || '[]');
+        const isAlreadyFavorite = favoritesFromStorage.some((fav: Nonprofit) => fav.primarySlug === nonprofit.primarySlug);
+        setIsFavorite(isAlreadyFavorite);
+    }, [nonprofit.primarySlug]);
+
     return (
         <>
             <div className="mx-auto py-10 px-4 bg-gray-200 md:px-16 xl:px-20">
@@ -149,7 +171,7 @@ const Details: React.FC = () => {
                 <div className="mt-[100px]">
 
                     <button
-                        onClick={toggleFavorite}
+                        onClick={handleFavoriteToggle}
                         className={isFavorite ? "w-[40%] mb-4 block  mx-auto bg-red-600 text-white hover:opacity-80  font-bold py-2 px-4 rounded-lg shadow-lg"
                                 : 'w-[40%] mb-4 block  mx-auto bg-black text-white hover:opacity-80  font-bold py-2 px-4 rounded-lg shadow-lg'
                     }

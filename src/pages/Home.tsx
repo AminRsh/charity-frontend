@@ -60,9 +60,9 @@ const Home: React.FC = () => {
                                 />
                             )) : (
                                 <div className="mt-[40px]">
-                                    <p className="text-base md:text-lg lg:text-xl font-serif text-red-500">
+                                    {/* <p className="text-base md:text-lg lg:text-xl font-serif text-red-500">
                                         Sorry. Something went wrong
-                                    </p>
+                                    </p> */}
                                 </div>
                             )}
                     </div>
